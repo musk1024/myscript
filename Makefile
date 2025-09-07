@@ -1,3 +1,4 @@
+include $(TOPDIR)/rules.mk
 # 定义软件包名称
 PKG_NAME:=custom-script
 # 定义版本号
