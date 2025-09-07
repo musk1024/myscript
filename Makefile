@@ -12,23 +12,27 @@ include $(INCLUDE_DIR)/package.mk
 
 # 定义软件包在 menuconfig 中的描述
 define Package/custom-script
-    SECTION:=net
-    CATEGORY:=Network
-    TITLE:=Script For Custom Route
+	SECTION:=net
+	CATEGORY:=Network
+	TITLE:=Script For Custom Route
+endef
+
+define Build/Compile
+	# nothing to compile
 endef
 
 # 定义如何安装文件
 # 这个步骤决定了哪些文件会被复制到固件文件系统里
 define Package/custom-script/install
-    # 添加脚本到启动项
-    $(INSTALL_DIR) $(1)/etc/init.d
-    $(INSTALL_BIN) ./etc/init.d/iptvrule $(1)/etc/init.d
+	# 添加脚本到启动项
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./etc/init.d/iptvrule $(1)/etc/init.d
 
-    # 当接口发生重连后触发以下脚本运行
-    $(INSTALL_DIR) $(1)/etc/hotplug.d/iface
-    $(INSTALL_BIN) ./etc/hotplug.d/iface/99-iptv $(1)/etc/hotplug.d/iface/
-    $(INSTALL_BIN) ./etc/hotplug.d/iface/99-passwall $(1)/etc/hotplug.d/iface/
-    $(INSTALL_BIN) ./etc/hotplug.d/iface/99-voip-route $(1)/etc/hotplug.d/iface/
+	# 当接口发生重连后触发以下脚本运行
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
+	$(INSTALL_BIN) ./etc/hotplug.d/iface/99-iptv $(1)/etc/hotplug.d/iface/
+	$(INSTALL_BIN) ./etc/hotplug.d/iface/99-passwall $(1)/etc/hotplug.d/iface/
+	$(INSTALL_BIN) ./etc/hotplug.d/iface/99-voip-route $(1)/etc/hotplug.d/iface/
 endef
 
 $(eval $(call BuildPackage,custom-script))
