@@ -1,0 +1,26 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=15
+
+boot() {
+    ip rule flush table 200
+    ip route flush table 200
+    ip rule add from 10.18.1.30 to 0.0.0.0/0 table 200
+    ip rule add from 10.18.1.0/24 to 218.71.128.0/24 table 200
+    ip rule add from 10.18.1.0/24 to 218.71.130.0/24 table 200
+    ip route add default via 10.165.239.1 dev eth1.43 table 200
+}
+
+start() {
+    boot
+}
+
+stop() {
+    ip rule flush table 200
+    ip route flush table 200
+}
+
+restart() {
+    boot
+}

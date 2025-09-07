@@ -1,0 +1,14 @@
+#!/bin/sh
+[ "$ACTION" = ifup ] &&
+sys_uptime=$(cut -d' ' -f1 /proc/uptime | cut -d'.' -f1)
+# 设置阈值为 120 秒
+threshold=120
+if [ "$sys_uptime" -ge "$threshold" ]; then
+# 只有系统运行的时间超过设定的阈值，才会执行重启passwall的命令
+	#sleep 20
+	/etc/init.d/smartdns restart
+	/etc/init.d/passwall stop
+	/etc/init.d/passwall start
+fi
+# 退出
+exit 0

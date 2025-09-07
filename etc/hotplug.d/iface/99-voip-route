@@ -1,0 +1,17 @@
+#!/bin/sh
+
+[ "$ACTION" = "ifup" ] && [ "$INTERFACE" = "VOIP" ] || exit 0
+
+GATEWAY=$(ifstatus VOIP | jsonfilter -e '@.inactive.route[0].nexthop')
+logger -t voip-route "获取到 GATEWAY = '$GATEWAY'"
+
+[ -z "$GATEWAY" ] && logger -t voip-route "获取网关失败，退出" && exit 1
+
+# 设置到正确的 route
+uci set network.@route[0].gateway="$GATEWAY"
+
+uci commit network
+
+# 重载网络配置
+/etc/init.d/network reload
+logger -t voip-route "已设置 network.@route[0].gateway 为 $GATEWAY"

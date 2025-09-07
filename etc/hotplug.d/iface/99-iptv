@@ -1,0 +1,4 @@
+#!/bin/sh
+[ "$ACTION" = ifup ] && [ "$INTERFACE" = IPTV ] &&
+/etc/init.d/udpxy restart
+/etc/init.d/iptvrule restart
